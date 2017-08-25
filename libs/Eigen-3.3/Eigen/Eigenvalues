@@ -1,0 +1,57 @@
+// This file is part of Eigen, a lightweight C++ template library
+// for linear algebra.
+//
+// This Source Code Form is subject to the terms of the Mozilla
+// Public License v. 2.0. If a copy of the MPL was not distributed
+// with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#ifndef EIGEN_EIGENVALUES_MODULE_H
+#define EIGEN_EIGENVALUES_MODULE_H
+
+#include "Core"
+
+#include "Eigen-3.3/Eigen/src/Core/util/DisableStupidWarnings.h"
+
+#include "Cholesky"
+#include "Jacobi"
+#include "Householder"
+#include "LU"
+#include "Geometry"
+
+/** \defgroup Eigenvalues_Module Eigenvalues module
+  *
+  *
+  *
+  * This module mainly provides various eigenvalue solvers.
+  * This module also provides some MatrixBase methods, including:
+  *  - MatrixBase::eigenvalues(),
+  *  - MatrixBase::operatorNorm()
+  *
+  * \code
+  * #include <Eigen/Eigenvalues>
+  * \endcode
+  */
+
+#include "Eigen-3.3/Eigen/src/misc/RealSvd2x2.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/Tridiagonalization.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/RealSchur.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/EigenSolver.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/HessenbergDecomposition.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/ComplexSchur.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/ComplexEigenSolver.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/RealQZ.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h"
+#include "Eigen-3.3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h"
+#ifdef EIGEN_USE_LAPACKE
+#include "src/misc/lapacke.h"
+#include "src/Eigenvalues/RealSchur_LAPACKE.h"
+#include "src/Eigenvalues/ComplexSchur_LAPACKE.h"
+#include "src/Eigenvalues/SelfAdjointEigenSolver_LAPACKE.h"
+#endif
+
+#include "Eigen-3.3/Eigen/src/Core/util/ReenableStupidWarnings.h"
+
+#endif // EIGEN_EIGENVALUES_MODULE_H
+/* vim: set filetype=cpp et sw=2 ts=2 ai: */
