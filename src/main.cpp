@@ -122,7 +122,6 @@ int main() {
                 too_close = true;
 
                 //check if lane change is possible and at what target velocity
-
                 if (current_lane == LEFT_LANE) {
                   auto center_lane_sensor_readings = fusion_map[CENTER_LANE];
                   for (const auto &c_reading: center_lane_sensor_readings) {
@@ -135,6 +134,7 @@ int main() {
                       break;
                     }
                   }
+
                 } else if (current_lane == CENTER_LANE) {
 
                   //first we check if we can go left

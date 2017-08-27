@@ -87,3 +87,70 @@ the path has processed since last time.
     cd uWebSockets
     git checkout e94b6e1
     ```
+    
+
+## Reflection: Model Documentation
+
+I decided to go with a very simple heuristic for my model.
+This works because the search space for the highway in the simulator 
+is very constrained. Hence the idea was to make a model
+that was very general and the decisions it makes could be combined
+without having bad side effects. The first thing I'll discuss is the 
+path generation. 
+
+### Path Generation
+The waypoints we receive from the simulator are sparse. Hence, we could not 
+rely on them for a continuous smooth path. The solution was to first create anchor points 
+spaced 30 meters apart and then use a library called [Spline](http://kluge.in-chemnitz.de/opensource/spline/) to fill in the points in between the anchors at the desired speed. At any points in time, there
+are 50 points being fed into the simulator. Hence, if the simulator only consumed five points to move
+the perfect controller, the next timestep we only generate five new points and we add that to the back of the 
+paths list. This is very efficient, since we don't re-generate the unused points.
+
+### Jerk
+The model has a very simple method to control the jerk; it can only gradually speed up or slow down. 
+```
+if (too_close) {
+  target_velocity -= .224;
+} else if (target_velocity < utils::MAX_VELOCITY) {
+  target_velocity += .224;
+}
+```
+
+### Fusion Map
+One of the first things I do when I get the sensor fusion list
+is to categorize each reading into a lane bin.
+
+```
+//fusion_map[LEFT_LANE] would return the vector containing
+//all readings for the LEFT_LANE
+map<int, vector<utils::SensorReading>> fusion_map;
+```
+This allowed me to reduced unnecessary checks.
+
+### Avoiding Collision
+The model easily can avoid collision by first looking at all the 
+cars in its lane `fusion_map[current_lane]` and checking
+if any car will be less than 30 meter from where I'll be in the future.
+We can use the car's `s` position in frenet coordinates and the car's
+speed to predict if that car will be in our way in the future timestep.
+If we detect a car ahead that is too close, we simple reduce
+speed until we match speed.
+
+### Lane Changing
+The lane changing strategy used was pretty simple.
+Once we detected a car is too close in our current lane,
+we go into trying to change lanes mode. To keep things simple
+we avoid trying to make multiple lane changes.
+For example, Left_Lane maps only to Center_Lane.
+Center_Lane maps to [Left_Lane, Right_Lane] and
+Right_Lane maps to Center_Lane.
+
+The expression we use to check if a lane change is possible
+is to check if in the future timestep there is at least a 
+10 meter gap to the front and back.
+
+If we are in the Center_Lane, then it first checks the Left_Lane
+if that fails we then check Right_Lane. In all cases,
+if lane change fails, we simply maintain the current lane.
+
+The search space for path generation was so small I did not need a complex cost function.
