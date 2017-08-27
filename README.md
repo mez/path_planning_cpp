@@ -125,7 +125,7 @@ is to categorize each reading into a lane bin.
 //all readings for the LEFT_LANE
 map<int, vector<utils::SensorReading>> fusion_map;
 ```
-This allowed me to reduced unnecessary checks.
+This allowed me to reduce unnecessary checks.
 
 ### Avoiding Collision
 The model easily can avoid collision by first looking at all the 
