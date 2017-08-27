@@ -210,4 +210,30 @@ namespace utils {
       ptsy[i] = shift_x*sin(shift_yaw) + shift_y*cos(shift_yaw);
     }
   }
+
+
+  struct SensorReading {
+    //car's unique ID,
+    double Id;
+    // car's x position in map coordinates,
+    double x;
+    // car's y position in map coordinates,
+    double y;
+    // car's x velocity in m/s,
+    double vx;
+    // car's y velocity in m/s,
+    double vy;
+    // car's s position in frenet coordinates,
+    double s;
+    // car's d position in frenet coordinates.
+    double d;
+
+    inline double speed() const { return sqrt(vx*vx+vy*vy); }
+  };
+
+  enum Street {
+    LEFT_LANE   = 0,
+    CENTER_LANE = 1,
+    RIGHT_LANE  = 2
+  };
 }
